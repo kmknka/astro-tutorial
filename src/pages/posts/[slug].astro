@@ -1,0 +1,35 @@
+---
+//src/pages/posts/[slug].astro
+import { getCollection, getEntry } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+
+// ① 全記事のslugを教える
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+  }));
+}
+
+// ② ページごとのslugを受け取る
+const { slug } = Astro.params;
+const entry = await getEntry('posts', slug);
+if (!entry) {
+  // 存在しない場合は 404 へリダイレクト
+  return Astro.redirect('/404', 404);
+}
+
+const { Content } = await entry.render();
+---
+
+<BlogPostLayout 
+  title={entry.data.title}
+  pubDate={entry.data.pubDate}
+  author={entry.data.author}
+  tags={entry.data.tags}
+>
+  <Content />
+</BlogPostLayout>
+
+
+

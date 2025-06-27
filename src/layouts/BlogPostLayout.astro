@@ -1,0 +1,46 @@
+---
+const { title, pubDate, author, tags} = Astro.props;
+---
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-gray-900 font-sans">
+    <header class="bg-blue-600 text-white p-4">
+      <nav class="flex gap-4">
+        <a href="/" class="hover:underline">ホーム</a>
+        <a href="/about/" class="hover:underline">概要</a>
+        <a href="/blog/" class="hover:underline">ブログ</a>
+      </nav>
+    </header>
+
+    <main class="max-w-3xl mx-auto p-6">
+      <article class="prose lg:prose-xl">
+        <h1 class="mb-2">{title}</h1>
+        <p class="text-sm text-gray-500 mb-6">
+          投稿日: {pubDate} | 著者: {author}
+        </p>
+        <div>
+            <slot/>
+        </div>
+        {tags && (
+          <div class="mt-6">
+            <p class="font-medium">タグ:</p>
+            <ul class="flex gap-2 flex-wrap">
+              {tags.map(tag => (
+                <li class="bg-gray-200 px-2 py-1 rounded">{tag}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </article>
+    </main>
+
+    <footer class="bg-gray-100 text-center p-4 mt-12">
+      © 2025 My Blog
+    </footer>
+  </body>
+</html>
+
